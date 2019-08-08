@@ -1,5 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
+import healthController from "./controller/healthController";
+// import postController from "./controller/postController";
 
 const app = express();
 const port = 3000;
@@ -11,8 +13,11 @@ db.once("open", () => {
     // we're connected!
 });
 
-const foo = { bar: "baz", baz: "super", foobar: "someOtherThing"};
+const getRouter = () => express.Router({
+  mergeParams: true,
+});
 
-app.get("/", (req, res) => res.send(foo));
+app.use("/health", healthController(getRouter()));
+// app.use("/post", postController(getRouter()));
 
 app.listen(port);
